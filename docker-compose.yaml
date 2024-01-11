@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: node:21-alpine
+    container_name: challenge-bridgein
+    entrypoint: /bin/sh
+    ports:
+      - 4000:4000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    tty: true
