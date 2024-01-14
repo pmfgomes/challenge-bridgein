@@ -11,7 +11,7 @@ export default function NotFound() {
         </p>
         <div className="mt-6">
           <Link to="/" className="w-full sm:w-auto text-md font-bold">
-            Go Home
+            Take me home
           </Link>
         </div>
       </div>
