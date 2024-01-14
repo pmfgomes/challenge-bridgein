@@ -1,4 +1,5 @@
+import TeamsTable from "@/components/TeamsTable/TeamsTable";
 
 export default function Teams() {
-  return <div>Teams</div>;
+  return <TeamsTable />;
 }

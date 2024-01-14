@@ -6,7 +6,7 @@ import { Loader2Icon } from "lucide-react";
 export default function Root() {
   return (
     <AppLayout>
-      <Suspense fallback={<Loader2Icon className="animate-spin" size={32} />}>
+      <Suspense fallback={<Loader2Icon className="animate-spin" size={64} />}>
         <Outlet />
       </Suspense>
     </AppLayout>
