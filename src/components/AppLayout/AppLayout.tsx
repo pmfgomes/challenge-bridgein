@@ -1,6 +1,7 @@
 import HeaderSection from "@/components/lib/Layout/HeaderLayout";
 import MainSection from "@/components/lib/Layout/MainLayout";
 import NavbarSection from "@/components/lib/Layout/NavbarLayout";
+import Navbar from "@/components/Navbar/Navbar";
 
 import { Dribbble } from "lucide-react";
 
@@ -20,7 +21,9 @@ export default function AppLayout(props: AppLayourProps) {
         </div>
       </HeaderSection>
       <section className="flex flex-row flex-grow">
-        <NavbarSection>Navbar</NavbarSection>
+        <NavbarSection>
+          <Navbar />
+        </NavbarSection>
         <MainSection>{children}</MainSection>
       </section>
     </div>
