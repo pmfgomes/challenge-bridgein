@@ -1,17 +1,23 @@
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import type { Table as TableProps } from "@tanstack/react-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/lib/Table/Table";
 
-interface DataTableProps<TData, TValue> {
+export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  table?: TableProps<TData>;
+  loading?: boolean;
 }
 
-export default function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+export default function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
+  const { columns, data, table: tableProps, loading } = props;
+  const table =
+    tableProps ||
+    useReactTable({
+      data,
+      columns,
+      getCoreRowModel: getCoreRowModel(),
+    });
 
   return (
     <div className="rounded-md border bg-white shadow-sm">
@@ -21,7 +27,7 @@ export default function DataTable<TData, TValue>({ columns, data }: DataTablePro
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="font-bold">
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 );
@@ -41,7 +47,7 @@ export default function DataTable<TData, TValue>({ columns, data }: DataTablePro
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                {loading ? "Loading data..." : "No results"}
               </TableCell>
             </TableRow>
           )}

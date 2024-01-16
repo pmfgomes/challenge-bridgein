@@ -1,8 +1,9 @@
 import { Team, columns } from "@/components/TeamsTable/TeamsColumns";
-import DataTable from "@/components/lib/DataTable/DataTable";
-import { useQuery } from "@tanstack/react-query";
-import LoadingSpinner from "@/components/lib/LoadingSpinner/LoadingSpinner";
-import type { PaginationQueryResponse } from "@/utils/queries";
+import DataTableWithPagination from "@/components/lib/DataTable/DataTableWithPagination";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { fetchTeamsPagination, type PaginationQueryResponse } from "@/services/queries";
+import { useState } from "react";
+import type { PaginationState } from "@tanstack/react-table";
 
 interface TeamsQueryResponse {
   data: Team[];
@@ -10,15 +11,31 @@ interface TeamsQueryResponse {
 }
 
 export default function TeamsTable() {
-  const { data, error, isFetching, isSuccess } = useQuery<TeamsQueryResponse>({ queryKey: ["/teams"] });
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 1,
+    pageSize: 10,
+  });
+
+  const { data, error, isFetching } = useQuery<TeamsQueryResponse>({
+    queryKey: ["/teams", pagination.pageIndex],
+    queryFn: () => fetchTeamsPagination({ page: pagination.pageIndex }),
+    placeholderData: keepPreviousData,
+  });
 
   if (error) {
     return <div>{error.message}</div>;
   }
 
-  if (isFetching) {
-    return <LoadingSpinner />;
-  }
-
-  return <div className="mx-auto py-10">{isSuccess && <DataTable columns={columns} data={data.data} />}</div>;
+  return (
+    <div className="mx-auto">
+      <DataTableWithPagination
+        columns={columns}
+        data={data?.data || []}
+        pageCount={data?.meta?.total_pages ?? 0}
+        onPageChange={setPagination}
+        loading={isFetching}
+      />
+    </div>
+  );
 }
+

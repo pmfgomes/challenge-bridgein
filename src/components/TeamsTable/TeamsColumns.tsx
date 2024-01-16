@@ -31,4 +31,13 @@ export const columns: ColumnDef<Team>[] = [
     accessorKey: "conference",
     header: "Conference",
   },
+  {
+    accessorKey: "action",
+    header: "",
+    cell: ({ row }) => {
+      const team = row.original;
+
+      return <div>View Team</div>;
+    },
+  },
 ];
